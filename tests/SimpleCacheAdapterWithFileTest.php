@@ -1,11 +1,15 @@
 <?php
 
-namespace devonliu\cache\tests;
+namespace Wearesho\SimpleCache\Tests;
 
 use Cache\IntegrationTests\SimpleCacheTest;
-use devonliu\cache\SimpleCacheAdapter;
-use yii\caching\FileCache;
+use Wearesho\SimpleCache;
+use yii\caching;
 
+/**
+ * Class SimpleCacheAdapterWithFileTest
+ * @package Wearesho\SimpleCache\Tests
+ */
 class SimpleCacheAdapterWithFileTest extends SimpleCacheTest
 {
     protected $skippedTests = [
@@ -14,11 +18,9 @@ class SimpleCacheAdapterWithFileTest extends SimpleCacheTest
 
     public function createSimpleCache()
     {
-        return \Yii::createObject([
-            'class' => SimpleCacheAdapter::class,
+        return new SimpleCache\Adapter([
             'cache' => [
-                'class' => FileCache::class,
-                'cachePath' => '/tmp/simple-cache-tests'
+                'class' => caching\FileCache::class,
             ],
         ]);
     }
