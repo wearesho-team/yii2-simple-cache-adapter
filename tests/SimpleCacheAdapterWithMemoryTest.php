@@ -1,11 +1,15 @@
 <?php
 
-namespace devonliu\cache\tests;
+namespace Wearesho\SimpleCache\Tests;
 
 use Cache\IntegrationTests\SimpleCacheTest;
-use devonliu\cache\SimpleCacheAdapter;
-use yii\caching\ArrayCache;
+use Wearesho\SimpleCache;
+use yii\caching;
 
+/**
+ * Class SimpleCacheAdapterWithMemoryTest
+ * @package Wearesho\SimpleCache\Tests
+ */
 class SimpleCacheAdapterWithMemoryTest extends SimpleCacheTest
 {
     protected $skippedTests = [
@@ -14,10 +18,9 @@ class SimpleCacheAdapterWithMemoryTest extends SimpleCacheTest
 
     public function createSimpleCache()
     {
-        return \Yii::createObject([
-            'class' => SimpleCacheAdapter::class,
+        return new SimpleCache\Adapter([
             'cache' => [
-                'class' => ArrayCache::class,
+                'class' => caching\ArrayCache::class,
             ],
         ]);
     }

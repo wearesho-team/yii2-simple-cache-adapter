@@ -1,39 +1,33 @@
 <?php
 
-namespace devonliu\cache;
+namespace Wearesho\SimpleCache;
 
-use DateInterval;
-use DateTime;
-use Yii;
 use yii\base\Component;
+use yii\caching;
+use yii\di;
 use Psr\SimpleCache\CacheInterface;
-use yii\caching\Cache;
-use yii\di\Instance;
 
-class SimpleCacheAdapter extends Component implements CacheInterface
+/**
+ * Class Adapter
+ * @package Wearesho\SimpleCache
+ */
+class Adapter extends Component implements CacheInterface
 {
-    const INVALID_KEY_CHARACTER = '{}()/\@:';
+    public const INVALID_KEY_CHARACTER = '{}()/\@:';
 
     /**
-     * @var Cache
+     * @var caching\CacheInterface|array|string definition
      */
-    public $cache;
+    public $cache = 'cache';
 
-    public function init()
+    /**
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function init(): void
     {
         parent::init();
 
-        if (! $this->cache) {
-            $this->cache = Yii::$app->cache;
-        } else {
-            $this->cache = Instance::ensure($this->cache, Cache::class);
-        }
-
-    }
-
-    protected function getCache()
-    {
-        return $this->cache;
+        $this->cache = di\Instance::ensure($this->cache, caching\CacheInterface::class);
     }
 
     /**
@@ -42,19 +36,22 @@ class SimpleCacheAdapter extends Component implements CacheInterface
      * @param string $key
      * @param null $default
      * @return bool|mixed|null
+     * @throws InvalidArgumentException
      */
     public function get($key, $default = null)
     {
         $this->assertValidKey($key);
 
-        $data = $this->getCache()->get($key);
+        $data = $this->cache->get($key);
 
         if ($data === false) {
             return $default;
-        } else if ($data === null) {
-            return false;
         } else {
-            return $data;
+            if ($data === null) {
+                return false;
+            } else {
+                return $data;
+            }
         }
     }
 
@@ -73,24 +70,24 @@ class SimpleCacheAdapter extends Component implements CacheInterface
         // case FALSE to null so we can detect that if
         // the cache miss/expired or it did set the FALSE value into cache
         $value = $value == false ? null : $value;
-        return $this->getCache()->set($key, $value, $duration);
+        return $this->cache->set($key, $value, $duration);
     }
 
     public function delete($key)
     {
         $this->assertValidKey($key);
 
-        return $this->has($key) ? $this->getCache()->delete($key) : true;
+        return $this->has($key) ? $this->cache->delete($key) : true;
     }
 
     public function clear()
     {
-        return $this->getCache()->flush();
+        return $this->cache->flush();
     }
 
     public function getMultiple($keys, $default = null)
     {
-        if (! $keys instanceof \Traversable && ! is_array($keys)) {
+        if (!$keys instanceof \Traversable && !is_array($keys)) {
             throw new InvalidArgumentException(
                 'Invalid keys: ' . var_export($keys, true) . '. Keys should be an array or Traversable of strings.'
             );
@@ -106,7 +103,7 @@ class SimpleCacheAdapter extends Component implements CacheInterface
 
     public function setMultiple($values, $ttl = null)
     {
-        if (! $values instanceof \Traversable && ! is_array($values)) {
+        if (!$values instanceof \Traversable && !is_array($values)) {
             throw new InvalidArgumentException(
                 'Invalid keys: ' . var_export($values, true) . '. Keys should be an array or Traversable of strings.'
             );
@@ -130,10 +127,12 @@ class SimpleCacheAdapter extends Component implements CacheInterface
     {
         if ($keys instanceof \Traversable) {
             $keys = iterator_to_array($keys, false);
-        } else if (! is_array($keys)) {
-            throw new InvalidArgumentException(
-                'Invalid keys: ' . var_export($keys, true) . '. Keys should be an array or Traversable of strings.'
-            );
+        } else {
+            if (!is_array($keys)) {
+                throw new InvalidArgumentException(
+                    'Invalid keys: ' . var_export($keys, true) . '. Keys should be an array or Traversable of strings.'
+                );
+            }
         }
 
         $res = true;
@@ -148,12 +147,16 @@ class SimpleCacheAdapter extends Component implements CacheInterface
     {
         $this->assertValidKey($key);
 
-        return $this->getCache()->exists($key);
+        return $this->cache->exists($key);
     }
 
+    /**
+     * @param $key
+     * @throws InvalidArgumentException
+     */
     protected function assertValidKey($key)
     {
-        if (! is_string($key)) {
+        if (!is_string($key)) {
             throw new InvalidArgumentException('Invalid key: ' . var_export($key, true) . '. Key should be a string.');
         }
 
@@ -171,9 +174,13 @@ class SimpleCacheAdapter extends Component implements CacheInterface
         }
     }
 
+    /**
+     * @param $ttl
+     * @throws InvalidArgumentException
+     */
     protected function assertValidTtl($ttl)
     {
-        if ($ttl !== null && ! is_int($ttl) && ! $ttl instanceof DateInterval) {
+        if ($ttl !== null && !is_int($ttl) && !$ttl instanceof \DateInterval) {
             $error = 'Invalid time: ' . serialize($ttl) . '. Must be integer or instance of DateInterval.';
             throw new InvalidArgumentException($error);
         }
@@ -182,6 +189,7 @@ class SimpleCacheAdapter extends Component implements CacheInterface
     /**
      * @param $ttl
      * @return false|int
+     * @throws InvalidArgumentException
      */
     protected function toSeconds($ttl)
     {
@@ -195,7 +203,7 @@ class SimpleCacheAdapter extends Component implements CacheInterface
         if (is_int($ttl)) {
             $sec = $ttl;
         } else {
-            $sec = ((new DateTime())->add($ttl))->getTimestamp() - (new DateTime())->getTimestamp();
+            $sec = ((new \DateTime())->add($ttl))->getTimestamp() - (new \DateTime())->getTimestamp();
         }
 
         return $sec > 0 ? $sec : false;

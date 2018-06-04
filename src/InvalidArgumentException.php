@@ -1,10 +1,13 @@
 <?php
 
-namespace devonliu\cache;
+namespace Wearesho\SimpleCache;
 
-use yii\base\Exception;
+use yii\base;
 
-class InvalidArgumentException extends Exception implements \Psr\SimpleCache\InvalidArgumentException
+/**
+ * Class InvalidArgumentException
+ * @package Wearesho\SimpleCache
+ */
+class InvalidArgumentException extends base\Exception implements \Psr\SimpleCache\InvalidArgumentException
 {
-
 }
