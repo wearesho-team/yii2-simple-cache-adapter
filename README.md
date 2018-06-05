@@ -1,4 +1,6 @@
 # Yii2 SimpleCache adapter
+[![Latest Stable Version](https://poser.pugx.org/wearesho-team/yii2-simple-cache-adapter/version)](https://packagist.org/packages/wearesho-team/yii2-simple-cache-adapter)
+[![Total Downloads](https://poser.pugx.org/wearesho-team/yii2-simple-cache-adapter/downloads)](https://packagist.org/packages/wearesho-team/yii2-simple-cache-adapter)
 [![Build Status](https://travis-ci.org/wearesho-team/yii2-simple-cache-adapter.svg?branch=master)](https://travis-ci.org/wearesho-team/yii2-simple-cache-adapter)
 [![codecov](https://codecov.io/gh/wearesho-team/yii2-simple-cache-adapter/branch/master/graph/badge.svg)](https://codecov.io/gh/wearesho-team/yii2-simple-cache-adapter)
 
