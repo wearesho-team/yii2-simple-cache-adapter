@@ -2,16 +2,16 @@
 
 namespace Wearesho\SimpleCache;
 
-use yii\base\Component;
+use yii\base;
 use yii\caching;
 use yii\di;
-use Psr\SimpleCache\CacheInterface;
+use Psr\SimpleCache;
 
 /**
  * Class Adapter
  * @package Wearesho\SimpleCache
  */
-class Adapter extends Component implements CacheInterface
+class Adapter extends base\Component implements SimpleCache\CacheInterface
 {
     public const INVALID_KEY_CHARACTER = '{}()/\@:';
 
@@ -21,7 +21,7 @@ class Adapter extends Component implements CacheInterface
     public $cache = 'cache';
 
     /**
-     * @throws \yii\base\InvalidConfigException
+     * @throws base\InvalidConfigException
      */
     public function init(): void
     {
