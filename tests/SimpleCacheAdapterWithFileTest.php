@@ -2,25 +2,22 @@
 
 namespace Wearesho\SimpleCache\Tests;
 
-use Cache\IntegrationTests\SimpleCacheTest;
+use Psr\SimpleCache\CacheInterface;
 use Wearesho\SimpleCache;
 use yii\caching;
 
-/**
- * Class SimpleCacheAdapterWithFileTest
- * @package Wearesho\SimpleCache\Tests
- */
 class SimpleCacheAdapterWithFileTest extends SimpleCacheTest
 {
-    protected $skippedTests = [
+    protected array $skippedTests = [
         'testSetMultipleWithIntegerArrayKey' => '',
     ];
 
-    public function createSimpleCache()
+    protected function createSimpleCache(): CacheInterface
     {
         return new SimpleCache\Adapter([
             'cache' => [
                 'class' => caching\FileCache::class,
+                'cachePath' => __DIR__ . DIRECTORY_SEPARATOR . 'runtime',
             ],
         ]);
     }
