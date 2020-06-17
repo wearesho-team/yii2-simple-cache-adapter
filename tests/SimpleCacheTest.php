@@ -313,7 +313,10 @@ abstract class SimpleCacheTest extends TestCase
         }
 
         $this->assertTrue($this->cache->deleteMultiple([]), 'Deleting a empty array should return true');
-        $this->assertTrue($this->cache->deleteMultiple(['key']), 'Deleting a value that does not exist should return true');
+        $this->assertTrue(
+            $this->cache->deleteMultiple(['key']),
+            'Deleting a value that does not exist should return true'
+        );
 
         $this->cache->set('key0', 'value0');
         $this->cache->set('key1', 'value1');
