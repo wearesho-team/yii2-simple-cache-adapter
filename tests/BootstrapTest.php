@@ -11,7 +11,7 @@ class BootstrapTest extends TestCase
     public function testBootstrap()
     {
         $this->assertFalse(\Yii::$container->has(CacheInterface::class));
-        $app = $this->createPartialMock(\yii\console\Application::class, []);
+        $app = (new \ReflectionClass(\yii\console\Application::class))->newInstanceWithoutConstructor();
         $bootstrap = new Bootstrap();
         $bootstrap->bootstrap($app);
         $this->assertTrue(\Yii::$container->has(CacheInterface::class));
