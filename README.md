@@ -10,13 +10,13 @@ This library originally developed by [devonliu02](https://github.com/devonliu02)
 now maintained by [Wearesho Team](https://wearesho.com)
 
 ## Requirements
-- PHP >=8.4
+- PHP >=8.4 (tested on PHP 8.4, PHP 8.5)
 - [psr/simple-cache](https://github.com/php-fig/simple-cache) 3
 
 ## Installation
 
 ```bash
-composer require wearesho-team/yii2-simple-cache-adapter
+composer require wearesho-team/yii2-simple-cache-adapter:^2.0
 ```
 
 ## Usage
