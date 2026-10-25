@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Wearesho\SimpleCache\Tests;
 
+use Cache\IntegrationTests\SimpleCacheTest;
 use Psr\SimpleCache\CacheInterface;
 use Wearesho\SimpleCache;
 use yii\caching;
@@ -12,7 +15,7 @@ class SimpleCacheAdapterWithFileTest extends SimpleCacheTest
         'testSetMultipleWithIntegerArrayKey' => '',
     ];
 
-    protected function createSimpleCache(): CacheInterface
+    public function createSimpleCache(): CacheInterface
     {
         return new SimpleCache\Adapter([
             'cache' => [

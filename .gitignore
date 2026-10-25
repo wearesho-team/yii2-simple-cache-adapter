@@ -2,3 +2,6 @@
 /.idea/
 .DS_Store
 /tests/output/
+/tests/runtime/
+/.phpunit.cache/
+/coverage.xml
