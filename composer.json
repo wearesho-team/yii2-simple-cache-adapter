@@ -33,15 +33,15 @@
   },
   "require-dev": {
     "cache/integration-tests": "^1.0.5",
-    "horat1us/yii2-asset-free": "^1.0.1",
-    "phpunit/phpunit": "^12.4",
+    "horat1us/yii2-asset-free": "^1.1",
+    "phpunit/phpunit": "^13.4",
     "squizlabs/php_codesniffer": "^4.0"
   },
   "config": {
     "process-timeout": 1800,
     "sort-packages": true,
     "platform": {
-      "php": "8.4"
+      "php": "8.4.1"
     },
     "allow-plugins": {
       "yiisoft/yii2-composer": true
